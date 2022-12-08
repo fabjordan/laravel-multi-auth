@@ -1,0 +1,44 @@
+version: "3.8"
+
+services:
+  inter-auth-nginx:
+    image: nginx:1.21.6-alpine
+    container_name: inter-auth-nginx
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www
+      - .docker/nginx:/etc/nginx/conf.d
+    networks:
+      inter-auth:
+
+  inter-auth-app:
+    build:
+      context: .docker/php
+      dockerfile: Dockerfile
+    container_name: inter-auth-app
+    volumes:
+      - ./:/var/www
+      - .docker/php/php.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      inter-auth:
+
+  inter-auth-db:
+    image: postgres
+    container_name: inter-auth-db
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./.docker/dbdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: inter
+      POSTGRES_USER: inter
+      POSTGRES_DB: inter
+      PGDATA: /var/lib/postgresql/data
+    networks:
+      - inter-auth
+
+networks:
+  inter-auth:
+    driver: bridge
