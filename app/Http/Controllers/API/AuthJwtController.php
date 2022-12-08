@@ -14,7 +14,7 @@ class AuthJwtController extends BaseController
 {
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login', 'register']]);
+        $this->middleware('auth:api', ['except' => ['login', 'login-jwt', 'register']]);
     }
 
     public function login(Request $request)

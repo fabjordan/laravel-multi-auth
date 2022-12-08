@@ -20,7 +20,7 @@ use App\Http\Controllers\API\BlogController;
 
 Route::post('login-jwt', [AuthJwtController::class, 'login'])->withoutMiddleware(['api']);
 
-Route::post('login', [AuthController::class, 'signin'])->withoutMiddleware(['api']);
+Route::post('login', [AuthController::class, 'signin'])->withoutMiddleware(['api', 'auth:sanctum']);
 Route::post('register', [AuthController::class, 'signup'])->withoutMiddleware(['api']);
 
 Route::middleware(['auth:sanctum'])->group(function () {

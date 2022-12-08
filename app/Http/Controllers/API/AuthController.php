@@ -12,6 +12,10 @@ use Laravel\Fortify\Events\RecoveryCodeReplaced;
 
 class AuthController extends BaseController
 {
+    // public function __construct()
+    // {
+    //     $this->middleware('auth:api', ['except' => ['login', 'login-jwt', 'register']]);
+    // }
     /**
      * Login API (with 2FA)
      * 
@@ -28,7 +32,7 @@ class AuthController extends BaseController
 
                 event(new RecoveryCodeReplaced($user, $code));
             } elseif (!$request->hasValidCode()) {
-                return $this->sendError('Unauthorised', ['error' => 'Invalid token']);
+                return $this->sendError('Código de 2 fatores Inválido!', ['error' => 'Código de 2 fatores Inválido!']);
             }
         }
 
@@ -39,7 +43,7 @@ class AuthController extends BaseController
 
             return $this->sendResponse($success, 'User signed in');
         } else {
-            return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
+            return $this->sendError('Erro ao tentar fazer o login.', ['error' => 'Unauthorised']);
         }
     }
 
